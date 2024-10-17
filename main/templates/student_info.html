@@ -1,0 +1,66 @@
+{% extends 'master.html' %}
+
+{% block title %}Students{% endblock %}
+    {% block content %}
+        <main>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">Student info change</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item"><a href="{% url 'profile' %}">Dashboard</a></li>
+                <li class="breadcrumb-item active"><a href="{% url 'students-page' %}">Student</a></li>
+            </ol>
+
+
+         {% if messages %}
+            <div class="card mb-4">
+                    <div class="card-body text-center">
+                        {% for message in messages %}
+                            {% if message.tags == 'error' %}
+                                <h2 class="text text-danger">{{ message }}</h2>
+                                {% else %}
+                                <h2 class="text text-success">{{ message }}</h2>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+            </div>
+         {% endif %}
+
+        <div class="card mb-4">
+            <div class="card-body">
+                 <form action="{% url 'info-change' student.id %}" method="POST">
+                            {% csrf_token %}
+
+                              <div class="modal-body">
+                                  <div class="mb-3 mt-3">
+                                    <input type="text" class="form-control" id="first_name" value="{{ student.first_name }}" name="first_name">
+                                  </div>
+                                 <div class="mb-3 mt-3">
+                                    <input type="text" class="form-control" id="last_name" value="{{ student.last_name }}"  name="last_name">
+                                  </div>
+
+                                    <div class="mb-3 mt-3">
+                                    <input type="text" class="form-control" id="contact" value="{{ student.contact }}"  name="contact">
+                                  </div>
+
+                                 <div class="mb-3 mt-3">
+                                     <select class="form-select" id="group_id" name="group_id">
+                                         {% for group in groups %}
+                                         	<option value="{{ group.id }}" {% if student.group_id == group.id %}selected{% endif %}>{{ group.number }} - {{ group.letter }}</option>
+                                         {% endfor %}
+                                    </select>
+                                 </div>
+
+
+                          </div>
+                          <div class="modal-footer">
+                            <button type="submit" class="btn btn-warning"> Edit info</button>
+                          </div>
+                        </form>
+            </div>
+
+        </div>
+
+
+        </div>
+    </main>
+     {% endblock %}
